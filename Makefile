@@ -73,3 +73,7 @@ opam-dev-deps:
 .PHONY: submodules
 submodules-init:
 	git submodule update --init
+
+.PHONY: install-client
+install-client:
+	cd editor/code;	npm install
