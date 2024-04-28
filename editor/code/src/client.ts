@@ -36,6 +36,7 @@ import { InfoPanel, goalReq } from "./goals";
 import { FileProgressManager } from "./progress";
 import { coqPerfData, PerfDataView } from "./perf";
 import { sentenceNext, sentenceBack } from "./edit";
+import { HeatMap } from "./heatmap";
 
 let config: CoqLspClientConfig;
 let client: BaseLanguageClient;
@@ -52,6 +53,9 @@ let lspStatusItem: StatusBarItem;
 // Lifetime of the perf data setup == client lifetime for the hook, extension for the webview
 let perfDataView: PerfDataView;
 let perfDataHook: Disposable;
+
+let heatMap: HeatMap;
+
 
 // Client Factory types
 export type ClientFactoryType = (
@@ -134,9 +138,11 @@ export function activateCoqLSP(
           infoPanel.dispose();
           fileProgress.dispose();
           perfDataHook.dispose();
+          heatMap.dispose();
         });
     }
   };
+  
 
   const start = () => {
     if (client && client.isRunning()) return;
@@ -164,6 +170,8 @@ export function activateCoqLSP(
       perfDataHook = client.onNotification(coqPerfData, (data) => {
         perfDataView.update(data);
       });
+      // heatMap = new HeatMap(wsConfig.get("heatmap.enabled") ?? true);
+
       resolve(client);
     });
 
@@ -263,6 +271,14 @@ export function activateCoqLSP(
   );
 
   context.subscriptions.push(goalsHook);
+  
+  heatMap = new HeatMap(false);
+  // context.subscriptions.push(heatMap);
+  heatMap.toggle();
+  
+  const heatMapToggle = () => {
+    heatMap.toggle();
+  }
 
   const docReq = new RequestType<FlecheDocumentParams, FlecheDocument, void>(
     "coq/getDocument"
@@ -359,7 +375,9 @@ export function activateCoqLSP(
 
   coqEditorCommand("sentenceNext", sentenceNext);
   coqEditorCommand("sentenceBack", sentenceBack);
-
+  
+  coqEditorCommand("heatmap.toggle", heatMapToggle);
+ 
   createEnableButton();
 
   start();

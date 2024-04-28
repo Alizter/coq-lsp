@@ -14,6 +14,7 @@ export interface CoqLspServerConfig {
   show_stats_on_hover: boolean;
   show_loc_info_on_hover: boolean;
   check_only_on_request: boolean;
+  heatmap: boolean;
 }
 
 export namespace CoqLspServerConfig {
@@ -35,6 +36,7 @@ export namespace CoqLspServerConfig {
       show_stats_on_hover: wsConfig.show_stats_on_hover,
       show_loc_info_on_hover: wsConfig.show_loc_info_on_hover,
       check_only_on_request: wsConfig.check_only_on_request,
+      heatmap: wsConfig.heatmap,
     };
   }
 }

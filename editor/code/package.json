@@ -113,6 +113,10 @@
       {
         "command": "coq-lsp.sentenceBack",
         "title": "Coq LSP: try to jump to previous Coq sentence"
+      },
+      {
+        "command": "coq-lsp.heatmap.toggle",
+        "title": "Coq LSP: Toggle heatmap"
       }
     ],
     "keybindings": [
@@ -307,6 +311,16 @@
             "type": "boolean",
             "default": true,
             "description": "Automatically ignore Coq object files in the workspace (.vo, .vos, ...)"
+          }
+        }
+      },
+      { "title": "Heatmap",
+        "type": "object",
+        "properties": {
+          "coq-lsp.heatmap.enabled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enable heatmap for Coq files"
           }
         }
       }
